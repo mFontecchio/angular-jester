@@ -2,6 +2,9 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
 import {ParsedPath} from "path";
+import {findAllMethods, getUsedMethods} from "./helpers";
+import ts = require("typescript");
+import {parseTsFile} from "./helpers/parse-source-file.angular";
 
 export class FH {
 	createJestSpecFile(filePath: string) {
@@ -21,7 +24,8 @@ export class FH {
 				file.name.includes("guard") ||
 				file.name.includes("resolver")
 			) {
-				specFileContent = this.serviceSpec(file);
+				// specFileContent = this.serviceSpec(file);
+				return console.log(parseTsFile(file));
 			} else if (file.name.includes("directive")) {
 				specFileContent = this.directiveSpec(
 					file,
@@ -178,7 +182,7 @@ describe('${className}', () => {
 
 	// Helper Methods
 
-	private getFileContent(file: ParsedPath) {
+	private getFileContent(file: ParsedPath): string {
 		const filePath = path.join(file.dir, file.base);
 		const fileContent = fs.readFileSync(filePath, "utf-8");
 		return fileContent;
@@ -195,7 +199,8 @@ describe('${className}', () => {
 	private getMethodMatches(file: ParsedPath) {
 		const fileContent = this.getFileContent(file);
 		// Find all methods in the file
-		const methodMatches = fileContent.match(/\s+(\w+)\([^)]*\)\s*{/g) || [];
+		const methodMatches =
+			fileContent.match(/\s+(\w+)(<.*?>\(|\()[^)]*\)(:.*\s|\s*){/g) || [];
 		return methodMatches.map((methodMatch) => {
 			const methodName = methodMatch.match(/(\w+)\s*\(/)?.[1] || "";
 			return `
