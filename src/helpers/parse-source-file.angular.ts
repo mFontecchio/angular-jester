@@ -2,50 +2,7 @@ import * as ts from "typescript";
 import * as fs from "fs";
 import {ParsedPath} from "path";
 import path = require("path");
-
-interface ImportInfo {
-	path: string;
-	names: string[];
-	importText: string;
-}
-
-interface ClassInfo {
-	name: string;
-	dependencies: Dependency[];
-	methods: MethodInfo[];
-	interfaces: string[];
-	imports: ImportInfo[];
-}
-
-interface Dependency {
-	name: string;
-	type?: string;
-}
-
-interface MethodInfo {
-	name: string;
-	arguments: Arguments[];
-	isStatic: boolean;
-	isAsync: boolean;
-}
-
-interface Arguments {
-	name: string;
-	type?: string;
-}
-
-interface Property {
-	name: string;
-	type?: string;
-	defaultValue?: any;
-	decorator?: string;
-	isOptional: boolean;
-}
-
-interface Function {
-	name: string;
-	isAsync: boolean;
-}
+import {ArgumentInfo, ClassInfo, ImportInfo} from "../models/index.angular";
 
 export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 	const filePath = path.join(file.dir, file.base);
@@ -98,7 +55,7 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 						// Handle method declarations
 						const methodName = childNode.name?.getText();
 						// Handle arguments
-						let args: Arguments[] = [];
+						let args: ArgumentInfo[] = [];
 
 						childNode.parameters.forEach((param) => {
 							args.push({
@@ -134,8 +91,3 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 	visit(sourceFile);
 	return parsedData;
 }
-
-// const filePath = "path/to/your/file.ts";
-// const parsedData = parseTsFile(filePath);
-
-// console.log("Parsed Data:", parsedData);
