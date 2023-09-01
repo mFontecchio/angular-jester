@@ -17,7 +17,6 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 	const importData: ImportInfo[] = [];
 
 	function visit(node: ts.Node) {
-		console.log("in visit");
 		if (ts.isImportDeclaration(node)) {
 			// Handle import declarations
 			let namedImports: string[] = [];
