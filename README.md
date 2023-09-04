@@ -1,8 +1,11 @@
-# angular-jester README
+# Angular Jester
 
-This is a fork of [angular-spec-generator](https://github.com/ThRintelen/angular-spec-generator). The only difference is some exctra stubbing to include services and methods for each type.
+This is a rework/compilation of [angular-spec-generator](https://github.com/ThRintelen/angular-spec-generator) & [jest-test-gen](https://github.com/egm0121/jest-test-gen). The only difference is some exctra stubbing to include services and methods for each type.
 
-Please support the original [https://github.com/ThRintelen/angular-spec-generator](https://github.com/ThRintelen/angular-spec-generator) by [Thorsten Rintelen](https://github.com/ThRintelen) & [Bonnie Hanks](https://github.com/bonnie-gaggle).
+Please support the originals:
+
+-   [https://github.com/ThRintelen/angular-spec-generator](https://github.com/ThRintelen/angular-spec-generator) by [Thorsten Rintelen](https://github.com/ThRintelen) & [Bonnie Hanks](https://github.com/bonnie-gaggle).
+-   [https://github.com/egm0121/jest-test-gen](https://github.com/egm0121/jest-test-gen) by [Giulio Dellorbo](https://github.com/egm0121)
 
 ## Features
 
@@ -32,24 +35,11 @@ The extension works for files in an Angular project. The files should be named l
 -   .pipe.ts
 -   .interceptor.ts
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
--   `myExtension.enable`: Enable/disable this extension.
--   `myExtension.thing`: Set to `blah` to do something.
-
 ## Known Issues
 
 Some methods may not be found/included.
 
 ## Release Notes
-
-Users appreciate release notes as you update your extension.
 
 ### 0.0.2
 
