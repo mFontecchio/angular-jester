@@ -2,7 +2,13 @@ import * as ts from "typescript";
 import * as fs from "fs";
 import {ParsedPath} from "path";
 import path = require("path");
-import {ArgumentInfo, ClassInfo, ImportInfo} from "../models/index.angular";
+import {
+	ArgumentInfo,
+	ClassInfo,
+	ImportInfo,
+	ModifierInfo,
+	PropertyInfo,
+} from "../models/index.angular";
 
 export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 	const filePath = path.join(file.dir, file.base);
@@ -13,8 +19,10 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 		true
 	);
 
+	// Setup data collections
 	const parsedData: Record<string, ClassInfo> = {};
 	const importData: ImportInfo[] = [];
+	const propertyData: PropertyInfo[] = [];
 
 	function visit(node: ts.Node) {
 		if (ts.isImportDeclaration(node)) {
@@ -36,12 +44,32 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 				parsedData[className] = {
 					name: className,
 					imports: importData,
+					properties: propertyData,
 					dependencies: [],
 					methods: [],
 					interfaces: [],
 				};
 
 				node.forEachChild((childNode) => {
+					// Handle class property declarations
+					if (ts.isPropertyDeclaration(childNode)) {
+						let propModifier: ModifierInfo[] = [];
+						childNode.modifiers?.forEach((modifier) => {
+							propModifier.push({
+								name: modifier.getText(),
+								kind: modifier.kind,
+							});
+						});
+						parsedData[className].properties.push({
+							name: childNode.name.getText(),
+							type: childNode.type?.getText(),
+							defaultValue: childNode.initializer?.getText(),
+							decorator: propModifier,
+							isOptional: !!childNode.questionToken,
+						});
+					}
+					// Handle Get Set Accessor
+
 					if (ts.isConstructorDeclaration(childNode)) {
 						childNode.parameters.forEach((param) => {
 							parsedData[className].dependencies.push({
