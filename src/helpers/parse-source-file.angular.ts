@@ -67,8 +67,8 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 							parsedData[className].methods.push({
 								name: methodName,
 								arguments: args,
-								isStatic: false,
-								isAsync: false,
+								isStatic: hasStaticModifier(childNode),
+								isAsync: hasAsyncModifier(childNode),
 							});
 						}
 					} else if (ts.isHeritageClause(childNode)) {
@@ -89,4 +89,34 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 
 	visit(sourceFile);
 	return parsedData;
+
+	function hasAsyncModifier(
+		node:
+			| ts.ClassDeclaration
+			| ts.FunctionDeclaration
+			| ts.FunctionExpression
+			| ts.MethodDeclaration
+	) {
+		return node.modifiers
+			? node.modifiers.some(
+					(mod) => mod.kind === ts.SyntaxKind.AsyncKeyword
+			  )
+			: false;
+	}
+
+	function hasStaticModifier(
+		node:
+			| ts.ClassDeclaration
+			| ts.FunctionDeclaration
+			| ts.FunctionExpression
+			| ts.MethodDeclaration
+	) {
+		return node.modifiers
+			? node.modifiers.some(
+					(mod) => mod.kind === ts.SyntaxKind.StaticKeyword
+			  )
+			: false;
+	}
+
+	function hasExportModifier() {}
 }

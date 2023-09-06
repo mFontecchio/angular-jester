@@ -1,64 +1,64 @@
 {
-	"name": "angular-jester",
-	"displayName": "Angular Jester",
-	"description": "Generate Jest spec files for Angular projects.",
-	"version": "0.0.2",
-	"publisher": "michael.fontecchio",
-	"author": {
-		"name": "Michael Fontecchio"
-	},
-	"icon": "logo.png",
-	"engines": {
-		"vscode": "^1.81.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/mFontecchio/angular-jester.git"
-	},
-	"categories": [
-		"Snippets",
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:angular-jester.generateJestFile"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "angular-jester.generateJestSpec",
-				"title": "Angular: Generate jest / jasmine spec file"
-			}
-		],
-		"menus": {
-			"explorer/context": [
-				{
-					"when": "!explorerResourceIsFolder",
-					"command": "angular-jester.generateJestSpec",
-					"group": "angular-jester@1"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/debug": "^4.1.8",
-		"@types/mocha": "^10.0.1",
-		"@types/node": "16.x",
-		"@types/vscode": "^1.81.0",
-		"@typescript-eslint/eslint-plugin": "^6.4.1",
-		"@typescript-eslint/parser": "^6.4.1",
-		"@vscode/test-electron": "^2.3.4",
-		"eslint": "^8.47.0",
-		"glob": "^10.3.3",
-		"mocha": "^10.2.0",
-		"typescript": "^5.1.6"
-	}
+    "name": "angular-jester",
+    "displayName": "Angular Jester",
+    "description": "Generate Jest spec files for Angular projects.",
+    "version": "0.0.2",
+    "publisher": "michael.fontecchio",
+    "author": {
+        "name": "Michael Fontecchio"
+    },
+    "icon": "logo.png",
+    "engines": {
+        "vscode": "^1.81.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mFontecchio/angular-jester.git"
+    },
+    "categories": [
+        "Snippets",
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:angular-jester.generateJestFile"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "angular-jester.generateJestSpec",
+                "title": "Angular: Generate jest / jasmine spec file"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "!explorerResourceIsFolder",
+                    "command": "angular-jester.generateJestSpec",
+                    "group": "angular-jester@1"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/debug": "^4.1.8",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "16.x",
+        "@types/vscode": "^1.81.0",
+        "@typescript-eslint/eslint-plugin": "^6.4.1",
+        "@typescript-eslint/parser": "^6.4.1",
+        "@vscode/test-electron": "^2.3.4",
+        "eslint": "^8.47.0",
+        "glob": "^10.3.3",
+        "mocha": "^10.2.0",
+        "typescript": "^5.1.6"
+    }
 }
