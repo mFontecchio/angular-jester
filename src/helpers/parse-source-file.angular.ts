@@ -3,6 +3,7 @@ import * as fs from "fs";
 import {ParsedPath} from "path";
 import path = require("path");
 import {
+	AccessorInfo,
 	ArgumentInfo,
 	ClassInfo,
 	ImportInfo,
@@ -23,6 +24,7 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 	const parsedData: Record<string, ClassInfo> = {};
 	const importData: ImportInfo[] = [];
 	const propertyData: PropertyInfo[] = [];
+	const accessorData: AccessorInfo[] = [];
 
 	function visit(node: ts.Node) {
 		if (ts.isImportDeclaration(node)) {
@@ -68,8 +70,11 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 							isOptional: !!childNode.questionToken,
 						});
 					}
-					// Handle Get Set Accessor
-
+					// Handle get/set accessor
+					if (ts.isGetAccessorDeclaration(childNode)) {
+						let args: ArgumentInfo[] = [];
+						childNode;
+					}
 					if (ts.isConstructorDeclaration(childNode)) {
 						childNode.parameters.forEach((param) => {
 							parsedData[className].dependencies.push({

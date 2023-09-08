@@ -53,6 +53,12 @@ export interface FunctionInfo {
 	isAsync: boolean;
 }
 
+export interface AccessorInfo {
+	name: string;
+	arguments?: ArgumentInfo[];
+	type?: string;
+}
+
 //ngOnInit, ngOnChange, ngDestroy, etc...
 export interface LifecycleHookInfo {
 	name: string;
