@@ -11,7 +11,7 @@ import {
 	PropertyInfo,
 } from "../models/index.angular";
 
-export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
+export function parseTsFile(file: ParsedPath): ClassInfo {
 	const filePath = path.join(file.dir, file.base);
 	const sourceFile = ts.createSourceFile(
 		"./x.ts",
@@ -21,10 +21,20 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 	);
 
 	// Setup data collections
-	const parsedData: Record<string, ClassInfo> = {};
+	// const parsedData: any = {};
 	const importData: ImportInfo[] = [];
 	const propertyData: PropertyInfo[] = [];
 	const accessorData: AccessorInfo[] = [];
+	let parsedData: ClassInfo = {
+		fileName: file.name,
+		name: "",
+		dependencies: [],
+		accessors: [],
+		methods: [],
+		interfaces: [],
+		imports: [],
+		properties: [],
+	};
 
 	function visit(node: ts.Node) {
 		if (ts.isImportDeclaration(node)) {
@@ -43,11 +53,13 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 			// Handle class declarations
 			const className = node.name?.getText();
 			if (className) {
-				parsedData[className] = {
+				parsedData = {
+					fileName: file.name,
 					name: className,
 					imports: importData,
 					properties: propertyData,
 					dependencies: [],
+					accessors: [],
 					methods: [],
 					interfaces: [],
 				};
@@ -62,7 +74,7 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 								kind: modifier.kind,
 							});
 						});
-						parsedData[className].properties.push({
+						parsedData.properties.push({
 							name: childNode.name.getText(),
 							type: childNode.type?.getText(),
 							defaultValue: childNode.initializer?.getText(),
@@ -71,13 +83,29 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 						});
 					}
 					// Handle get/set accessor
-					if (ts.isGetAccessorDeclaration(childNode)) {
+					if (
+						ts.isGetAccessorDeclaration(childNode) ||
+						ts.isSetAccessorDeclaration(childNode)
+					) {
 						let args: ArgumentInfo[] = [];
-						childNode;
+						const accessorName = childNode.name?.getText();
+						childNode.parameters.forEach((param) => {
+							args.push({
+								name: param.name?.getText(),
+								type: param.type?.getText(),
+							});
+						});
+						if (accessorName) {
+							parsedData.accessors.push({
+								name: accessorName,
+								arguments: args,
+								type: childNode.type?.getText(),
+							});
+						}
 					}
 					if (ts.isConstructorDeclaration(childNode)) {
 						childNode.parameters.forEach((param) => {
-							parsedData[className].dependencies.push({
+							parsedData.dependencies.push({
 								name: param.name?.getText(),
 								type: param.type?.getText(),
 							});
@@ -97,7 +125,7 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 						});
 
 						if (methodName) {
-							parsedData[className].methods.push({
+							parsedData.methods.push({
 								name: methodName,
 								arguments: args,
 								isStatic: hasStaticModifier(childNode),
@@ -108,9 +136,7 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 						// Handle implemented interfaces
 						childNode.types.forEach((interfaceNode) => {
 							const interfaceName = interfaceNode.getText();
-							parsedData[className].interfaces.push(
-								interfaceName
-							);
+							parsedData.interfaces.push(interfaceName);
 						});
 					}
 				});
@@ -151,5 +177,16 @@ export function parseTsFile(file: ParsedPath): Record<string, ClassInfo> {
 			: false;
 	}
 
-	function hasExportModifier() {}
+	function hasExportModifier(
+		node:
+			| ts.ClassDeclaration
+			| ts.FunctionDeclaration
+			| ts.VariableStatement
+	) {
+		return node.modifiers
+			? node.modifiers.some(
+					(mod) => mod.kind === ts.SyntaxKind.DefaultKeyword
+			  )
+			: false;
+	}
 }

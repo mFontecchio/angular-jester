@@ -5,8 +5,10 @@ export interface ImportInfo {
 }
 
 export interface ClassInfo {
+	fileName: string;
 	name: string;
 	dependencies: DependencyInfo[];
+	accessors: AccessorInfo[];
 	methods: MethodInfo[];
 	interfaces: string[];
 	imports: ImportInfo[];
@@ -53,6 +55,7 @@ export interface FunctionInfo {
 	isAsync: boolean;
 }
 
+//Get Set
 export interface AccessorInfo {
 	name: string;
 	arguments?: ArgumentInfo[];

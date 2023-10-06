@@ -1,8 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import {FileHandler} from "./file-handler";
-import {FH} from "./fh";
+import {FH} from "./file-handler";
 
 /**
  * This method is called when your extension is activated
