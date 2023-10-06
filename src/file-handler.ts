@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
-import ts = require("typescript");
 import {parseTsFile} from "./helpers/parse-source-file.angular";
 import {serviceSpec} from "./templates/service.template";
 import {pipeSpec} from "./templates/pipe.template";

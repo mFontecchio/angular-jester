@@ -2,7 +2,7 @@
 	"name": "angular-jester",
 	"displayName": "Angular Jester",
 	"description": "Generate Jest spec files for Angular projects.",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"publisher": "michael.fontecchio",
 	"author": {
 		"name": "Michael Fontecchio"
@@ -48,6 +48,9 @@
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"
 	},
+	"dependencies": {
+		"typescript": "^5.1.6"
+	},
 	"devDependencies": {
 		"@types/debug": "^4.1.8",
 		"@types/mocha": "^10.0.1",
@@ -58,7 +61,6 @@
 		"@vscode/test-electron": "^2.3.4",
 		"eslint": "^8.47.0",
 		"glob": "^10.3.3",
-		"mocha": "^10.2.0",
-		"typescript": "^5.1.6"
+		"mocha": "^10.2.0"
 	}
 }
