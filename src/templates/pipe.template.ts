@@ -1,28 +1,32 @@
-import {ClassInfo} from "../models/index.angular";
-import {getImportMatches} from "./shared/import.template";
-import {getServiceMatches} from "./shared/injectedService.template";
-import {getMethodMatches} from "./shared/method.template";
+import { FileInfo } from "../models/index.angular";
+import { getImportMatches } from "./shared/import.template";
+import { getServiceMatches } from "./shared/injectedService.template";
+import { getMethodMatches } from "./shared/method.template";
 
-export function pipeSpec(file: ClassInfo) {
-	try {
-		const specContent = `import { ${file.name} } from "./${file.fileName}";
-${getImportMatches(file)?.join("")}
+export function pipeSpec(file: FileInfo) {
+    try {
+        const specContent = `import { ${file.class.name} } from "./${
+            file.name
+        }";
+${getImportMatches(file.class)?.join("")}
 
-describe('${file.name}', () => {
-    let pipe: ${file.name};
+describe('${file.class.name}', () => {
+    let pipe: ${file.class.name};
 
     beforeEach(() => {
-        pipe = new ${file.name}(${getServiceMatches(file).providers});
+        pipe = new ${file.class.name}(${
+            getServiceMatches(file.class).providers
+        });
     })
 
     it('should should create an instance', () => {
         expect(pipe).toBeTruthy();
     });
-    ${getMethodMatches(file, "pipe")?.join("")}
+    ${getMethodMatches(file.class, "pipe")?.join("")}
 });`;
-		return specContent;
-	} catch (error) {
-		console.error("Error generating pipe spec:", error);
-		return "";
-	}
+        return specContent;
+    } catch (error) {
+        console.error("Error generating pipe spec:", error);
+        return "";
+    }
 }

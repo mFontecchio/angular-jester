@@ -1,9 +1,9 @@
-import {ClassInfo} from "../models/index.angular";
-import {getMethodMatches} from "./shared/method.template";
+import { FileInfo } from "../models/index.angular";
+import { getMethodMatches } from "./shared/method.template";
 
-export function directiveSpec(file: ClassInfo) {
-	try {
-		return `import { ${file.name} } from "./${file.fileName}";
+export function directiveSpec(file: FileInfo) {
+    try {
+        return `import { ${file.class.name} } from "./${file.name}";
 import { TestBed } from "@angular/core/testing";
 import { Component } from "@angular/core";
 
@@ -13,22 +13,22 @@ import { Component } from "@angular/core";
 })
 class TestComponent {}
 
-describe('${file.name}', () => {
+describe('${file.class.name}', () => {
     beforeEach(() => {
         fixture = TestBed.configureTestingModule({
-            declarations: [${file.name}, TestComponent]
+            declarations: [${file.class.name}, TestComponent]
         })
         .createComponent(TestComponent);
         fixture.detectChanges(); // initial binding
     });
     it('should ...', () => {
-        const directive = new ${file.name}();
+        const directive = new ${file.class.name}();
         expect(directive).toBeTruthy();
     });
-    ${getMethodMatches(file, "directive")?.join("")}
+    ${getMethodMatches(file.class, "directive")?.join("")}
 });`;
-	} catch (error) {
-		console.error("Error generating service spec:", error);
-		return "";
-	}
+    } catch (error) {
+        console.error("Error generating service spec:", error);
+        return "";
+    }
 }

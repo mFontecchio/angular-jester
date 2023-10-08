@@ -1,41 +1,41 @@
-import {ClassInfo} from "../models/index.angular";
-import {getImportMatches} from "./shared/import.template";
-import {getServiceMatches} from "./shared/injectedService.template";
-import {getMethodMatches} from "./shared/method.template";
+import { FileInfo } from "../models/index.angular";
+import { getImportMatches } from "./shared/import.template";
+import { getServiceMatches } from "./shared/injectedService.template";
+import { getMethodMatches } from "./shared/method.template";
 
-export function componentSpec(file: ClassInfo) {
-	try {
-		return `import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+export function componentSpec(file: FileInfo) {
+    try {
+        return `import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
         import { ComponentFixture, TestBed } from "@angular/core/testing";
-        import { ${file.name} } from "./${file.fileName}";
-        ${getImportMatches(file).join("")}
+        import { ${file.class.name} } from "./${file.name}";
+        ${getImportMatches(file.class).join("")}
 
-        describe("${file.name}", () => {
-        let component: ${file.name};
-        let fixture: ComponentFixture<${file.name}>;
+        describe("${file.class.name}", () => {
+        let component: ${file.class.name};
+        let fixture: ComponentFixture<${file.class.name}>;
         //let myService: MyService;
 
         beforeEach(async () => {
             await TestBed.configureTestingModule({
-            declarations: [${file.name}],
+            declarations: [${file.class.name}],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            providers: [${getServiceMatches(file).providers}],
+            providers: [${getServiceMatches(file.class).providers}],
             imports: []
             }).compileComponents();
         });
 
         beforeEach(() => {
-            fixture = TestBed.createComponent(${file.name});
+            fixture = TestBed.createComponent(${file.class.name});
             component = fixture.componentInstance;
             fixture.detectChanges();
 
             //myService = TestBed.inject(MyService);
         });
 
-        ${getMethodMatches(file, "component").join("")}
+        ${getMethodMatches(file.class, "component").join("")}
         })`;
-	} catch (error) {
-		console.error("Error generating component spec:", error);
-		return "";
-	}
+    } catch (error) {
+        console.error("Error generating component spec:", error);
+        return "";
+    }
 }
