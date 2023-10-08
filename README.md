@@ -41,6 +41,10 @@ Some methods may not be found/included.
 
 ## Release Notes
 
+### 0.0.4
+
+First publication of extension.
+
 ### 0.0.2
 
 Initial release of Angular Jester
