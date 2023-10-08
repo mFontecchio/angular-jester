@@ -41,7 +41,7 @@ Some methods may not be found/included.
 
 ## Release Notes
 
-### 0.0.4
+### 0.0.5
 
 First publication of extension.
 
