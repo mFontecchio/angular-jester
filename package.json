@@ -2,14 +2,14 @@
     "name": "angular-jester",
     "displayName": "Angular Jester",
     "description": "Generate Jest spec files for Angular projects.",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "michael-fontecchio",
     "author": {
         "name": "Michael Fontecchio"
     },
     "icon": "logo.png",
     "engines": {
-        "vscode": "^1.81.0"
+        "vscode": "^1.80.1"
     },
     "repository": {
         "type": "git",
