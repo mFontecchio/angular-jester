@@ -1,3 +1,5 @@
+name: Version Bump
+
 on:
   push:
     branches-ignore:
@@ -17,6 +19,8 @@ jobs:
           node-version: 14
 
       - name: Conditionally Bump Version
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN}}
         run: |
           branch=$(git rev-parse --abbrev-ref HEAD)
           if [ "$branch" != "develop" ]; then
