@@ -1,0 +1,30 @@
+on:
+  push:
+    branches-ignore:
+      - develop
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Conditionally Bump Version
+        run: |
+          branch=$(git rev-parse --abbrev-ref HEAD)
+          if [ "$branch" != "develop" ]; then
+            git config user.email ${{ secrets.USER_EMAIL}}
+            git config user.name "mFontecchio workflows"
+            npm version patch --no-git-tag-version
+            echo "##vso[task.setvariable variable=EXTENSION_VERSION]$(npm --no-git-tag-version version)"
+            git add package.json
+            git commit -m "Bump version"
+            git push
+          fi
