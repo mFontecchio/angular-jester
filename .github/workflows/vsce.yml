@@ -25,6 +25,8 @@ jobs:
 
       - name: Bump version
         run: |
+          git config user.email ${{ secrets.USER_EMAIL }}
+          git config user.name ${{ secrets.USER_NAME }}
           npm version patch --no-git-tag-version
           echo "##vso[task.setvariable variable=EXTENSION_VERSION]$(npm --no-git-tag-version version)"
           git add package.json
