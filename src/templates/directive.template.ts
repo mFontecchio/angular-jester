@@ -1,6 +1,12 @@
 import { FileInfo } from "../models/index.angular";
 import { getMethodMatches } from "./shared/method.template";
 
+/**
+ * Generates the spec file content for an Angular directive.
+ *
+ * @param file - The file information of the directive.
+ * @returns The spec file content as a string.
+ */
 export function directiveSpec(file: FileInfo) {
     try {
         return `import { ${file.class.name} } from "./${file.name}";

@@ -3,6 +3,12 @@ import { getImportMatches } from "./shared/import.template";
 import { getServiceMatches } from "./shared/injectedService.template";
 import { getMethodMatches } from "./shared/method.template";
 
+/**
+ * Generates the spec file content for a pipe.
+ *
+ * @param file - The file information.
+ * @returns The spec file content.
+ */
 export function pipeSpec(file: FileInfo) {
     try {
         const specContent = `import { ${file.class.name} } from "./${
