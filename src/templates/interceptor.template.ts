@@ -1,3 +1,9 @@
+/**
+ * Generates the interceptor spec content for testing.
+ *
+ * @param file The file information.
+ * @returns The interceptor spec content.
+ */
 import { FileInfo } from "../models/index.angular";
 import { getImportMatches } from "./shared/import.template";
 

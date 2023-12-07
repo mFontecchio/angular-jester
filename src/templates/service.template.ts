@@ -4,6 +4,12 @@ import { getImportMatches } from "./shared/import.template";
 import { getServiceMatches } from "./shared/injectedService.template";
 import { getMethodMatches } from "./shared/method.template";
 
+/**
+ * Generates the spec file content for a service.
+ *
+ * @param file - The file information of the service.
+ * @returns The spec file content as a string.
+ */
 export function serviceSpec(file: FileInfo) {
     try {
         // Generate TestBed setup with injected services and method stubs

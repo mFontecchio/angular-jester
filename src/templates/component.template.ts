@@ -3,6 +3,12 @@ import { getImportMatches } from "./shared/import.template";
 import { getServiceMatches } from "./shared/injectedService.template";
 import { getMethodMatches } from "./shared/method.template";
 
+/**
+ * Generates the component spec code for a given file.
+ *
+ * @param file - The file information.
+ * @returns The generated component spec code.
+ */
 export function componentSpec(file: FileInfo) {
     try {
         return `import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';

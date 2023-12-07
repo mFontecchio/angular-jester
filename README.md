@@ -41,6 +41,10 @@ Some methods may not be found/included.
 
 ## Release Notes
 
+### 0.0.9
+
+Angular 16+ updates. Few enhancements. Check out CHANGELOG.md for more info.
+
 ### 0.0.5
 
 First publication of extension.

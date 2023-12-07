@@ -34,10 +34,8 @@ export class FH {
             }
 
             const specFilePath = specFileName;
-            console.log("writefile start" + specFilePath);
 
             fs.writeFileSync(specFilePath, specFileContent, "utf-8");
-            console.log("writefile finished");
 
             vscode.window.showInformationMessage(
                 `Jest spec file "${path.parse(specFileName).name}" created.`

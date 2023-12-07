@@ -9,9 +9,14 @@ import {
     FileInfo,
     ImportInfo,
     ModifierInfo,
-    PropertyInfo
+    PropertyInfo,
 } from "../models/index.angular";
 
+/**
+ * Parses a TypeScript file and extracts information about imports, class declarations, properties, methods, and more.
+ * @param file - The path of the TypeScript file to parse.
+ * @returns The parsed information about the file, including imports, class details, properties, methods, and more.
+ */
 export function parseTsFile(file: ParsedPath): FileInfo {
     const filePath = path.join(file.dir, file.base);
     const sourceFile = ts.createSourceFile(
@@ -36,8 +41,9 @@ export function parseTsFile(file: ParsedPath): FileInfo {
             methods: [],
             interfaces: [],
             imports: [],
-            properties: []
-        }
+            properties: [],
+            isStandalone: false,
+        },
     };
     let parsedData: ClassInfo = {
         name: "",
@@ -46,7 +52,8 @@ export function parseTsFile(file: ParsedPath): FileInfo {
         methods: [],
         interfaces: [],
         imports: [],
-        properties: []
+        properties: [],
+        isStandalone: false,
     };
 
     function visit(node: ts.Node) {
@@ -60,7 +67,7 @@ export function parseTsFile(file: ParsedPath): FileInfo {
             importData.push({
                 path: (node.moduleSpecifier as ts.StringLiteral).text,
                 names: namedImports,
-                importText: node.getFullText()
+                importText: node.getFullText(),
             });
         } else if (ts.isClassDeclaration(node)) {
             // Handle class declarations
@@ -73,7 +80,8 @@ export function parseTsFile(file: ParsedPath): FileInfo {
                     dependencies: [],
                     accessors: [],
                     methods: [],
-                    interfaces: []
+                    interfaces: [],
+                    isStandalone: false,
                 };
 
                 node.forEachChild((childNode) => {
@@ -83,7 +91,7 @@ export function parseTsFile(file: ParsedPath): FileInfo {
                         childNode.modifiers?.forEach((modifier) => {
                             propModifier.push({
                                 name: modifier.getText(),
-                                kind: modifier.kind
+                                kind: modifier.kind,
                             });
                         });
                         parsedData.properties.push({
@@ -91,8 +99,14 @@ export function parseTsFile(file: ParsedPath): FileInfo {
                             type: childNode.type?.getText(),
                             defaultValue: childNode.initializer?.getText(),
                             decorator: propModifier,
-                            isOptional: !!childNode.questionToken
+                            isOptional: !!childNode.questionToken,
                         });
+                    }
+                    // Handle standalone
+                    if (ts.isPropertyAssignment(childNode)) {
+                        if (childNode.name.getText() === "standalone") {
+                            parsedData.isStandalone = isStandalone(childNode);
+                        }
                     }
                     // Handle get/set accessor
                     if (
@@ -104,14 +118,14 @@ export function parseTsFile(file: ParsedPath): FileInfo {
                         childNode.parameters.forEach((param) => {
                             args.push({
                                 name: param.name?.getText(),
-                                type: param.type?.getText()
+                                type: param.type?.getText(),
                             });
                         });
                         if (accessorName) {
                             parsedData.accessors.push({
                                 name: accessorName,
                                 arguments: args,
-                                type: childNode.type?.getText()
+                                type: childNode.type?.getText(),
                             });
                         }
                     }
@@ -119,7 +133,7 @@ export function parseTsFile(file: ParsedPath): FileInfo {
                         childNode.parameters.forEach((param) => {
                             parsedData.dependencies.push({
                                 name: param.name?.getText(),
-                                type: param.type?.getText()
+                                type: param.type?.getText(),
                             });
                         });
                     }
@@ -132,7 +146,7 @@ export function parseTsFile(file: ParsedPath): FileInfo {
                         childNode.parameters.forEach((param) => {
                             args.push({
                                 name: param.name?.getText(),
-                                type: param.type?.getText()
+                                type: param.type?.getText(),
                             });
                         });
 
@@ -141,7 +155,8 @@ export function parseTsFile(file: ParsedPath): FileInfo {
                                 name: methodName,
                                 arguments: args,
                                 isStatic: hasStaticModifier(childNode),
-                                isAsync: hasAsyncModifier(childNode)
+                                isAsync: hasAsyncModifier(childNode),
+                                isPrivate: hasPrivateModifier(childNode),
                             });
                         }
                     } else if (ts.isHeritageClause(childNode)) {
@@ -198,8 +213,28 @@ export function parseTsFile(file: ParsedPath): FileInfo {
     ) {
         return node.modifiers
             ? node.modifiers.some(
-                  (mod) => mod.kind === ts.SyntaxKind.DefaultKeyword
+                  (mod) => mod.kind === ts.SyntaxKind.ExportKeyword
               )
+            : false;
+    }
+
+    function hasPrivateModifier(
+        node:
+            | ts.ClassDeclaration
+            | ts.FunctionDeclaration
+            | ts.FunctionExpression
+            | ts.MethodDeclaration
+    ) {
+        return node.modifiers
+            ? node.modifiers.some(
+                  (mod) => mod.kind === ts.SyntaxKind.PrivateKeyword
+              )
+            : false;
+    }
+
+    function isStandalone(node: ts.PropertyAssignment) {
+        return node.initializer
+            ? node.initializer.kind === ts.SyntaxKind.FalseKeyword
             : false;
     }
 }

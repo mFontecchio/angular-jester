@@ -20,6 +20,7 @@ export interface ClassInfo {
     imports: ImportInfo[];
     properties: PropertyInfo[];
     lifecycleHooks?: LifecycleHookInfo[];
+    isStandalone: boolean;
 }
 
 export interface ConstructorInfo {
@@ -36,6 +37,7 @@ export interface MethodInfo {
     arguments: ArgumentInfo[];
     isStatic: boolean;
     isAsync: boolean;
+    isPrivate: boolean;
 }
 
 export interface ArgumentInfo {
