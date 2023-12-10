@@ -1,4 +1,4 @@
-import { ClassInfo } from "../../models/index.angular";
+import {ClassInfo} from "../../models/index.angular";
 
 /**
  * Retrieves an array of method matches from the given file based on the specified type.
@@ -6,26 +6,28 @@ import { ClassInfo } from "../../models/index.angular";
  * @param type - The type to filter the methods by.
  * @returns An array of method match descriptions.
  */
+// const config = vscode.workspace.getConfiguration('yourExtension');
+// const useDescribeBlocks = config.get('useDescribeBlocks');
 export function getMethodMatches(file: ClassInfo, type: string) {
-    return file.methods
-        ?.filter((method) => !method.isPrivate)
-        ?.map((method) => {
-            return `
+	return file.methods
+		?.filter((method) => !method.isPrivate)
+		?.map((method) => {
+			return `
 describe('${method.name}', () => {
   it('should...', () => {
     // Arrange
     // Act
     const result = ${type}.${method.name}(${
-                method.arguments
-                    ? method.arguments.map((arg) => {
-                          return `${arg.name}: ${arg.type}}`;
-                      })
-                    : ""
-            });
+				method.arguments
+					? method.arguments.map((arg) => {
+							return `${arg.name}: ${arg.type}`;
+					  })
+					: ""
+			});
     // Assert
     // Add your assertions here
   });
 });
       `;
-        });
+		});
 }

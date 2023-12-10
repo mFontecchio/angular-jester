@@ -1,66 +1,121 @@
 {
-    "name": "angular-jester",
-    "displayName": "Angular Jester",
-    "description": "Generate Jest spec files for Angular projects.",
-    "version": "0.0.11",
-    "publisher": "michael-fontecchio",
-    "author": {
-        "name": "Michael Fontecchio"
-    },
-    "icon": "logo.png",
-    "engines": {
-        "vscode": "^1.81.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/mFontecchio/angular-jester.git"
-    },
-    "categories": [
-        "Snippets",
-        "Other"
-    ],
-    "activationEvents": [
-        "onCommand:angular-jester.generateJestFile"
-    ],
-    "main": "./out/extension.js",
-    "contributes": {
-        "commands": [
-            {
-                "command": "angular-jester.generateJestSpec",
-                "title": "Angular: Generate jest / jasmine spec file"
-            }
-        ],
-        "menus": {
-            "explorer/context": [
-                {
-                    "when": "!explorerResourceIsFolder",
-                    "command": "angular-jester.generateJestSpec",
-                    "group": "angular-jester@1"
-                }
-            ]
-        }
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "pretest": "npm run compile && npm run lint",
-        "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
-    },
-    "dependencies": {
-        "typescript": "^5.1.6"
-    },
-    "devDependencies": {
-        "@types/debug": "^4.1.8",
-        "@types/mocha": "^10.0.1",
-        "@types/node": "16.x",
-        "@types/vscode": "^1.81.0",
-        "@typescript-eslint/eslint-plugin": "^6.4.1",
-        "@typescript-eslint/parser": "^6.4.1",
-        "@vscode/test-electron": "^2.3.4",
-        "eslint": "^8.47.0",
-        "glob": "^10.3.3",
-        "mocha": "^10.2.0"
-    }
+	"name": "angular-jester",
+	"displayName": "Angular Jester",
+	"description": "Generate Jest spec files for Angular projects.",
+	"version": "0.0.11",
+	"publisher": "michael-fontecchio",
+	"author": {
+		"name": "Michael Fontecchio"
+	},
+	"icon": "logo.png",
+	"engines": {
+		"vscode": "^1.81.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mFontecchio/angular-jester.git"
+	},
+	"categories": [
+		"Snippets",
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:angular-jester.generateJestFile"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "angular-jester.generateJestSpec",
+				"title": "Angular: Generate jest / jasmine spec file"
+			}
+		],
+		"configuration": {
+			"title": "Angular Jester",
+			"properties": {
+				"angular-jester.specFileExtension": {
+					"type": "string",
+					"default": ".spec.ts",
+					"description": "The extension to use for the generated spec file."
+				},
+				"angular-jester.specFileSuffix": {
+					"type": "string",
+					"default": ".spec",
+					"description": "The suffix to use for the generated spec file."
+				},
+				"angular-jester.specFilePrefix": {
+					"type": "string",
+					"default": "",
+					"description": "The prefix to use for the generated spec file."
+				},
+				"angular-jester.specFileLocation": {
+					"type": "string",
+					"default": "same",
+					"description": "The location to place the generated spec file. 'same' will place the spec file in the same directory as the source file. 'root' will place the spec file in the root of the project."
+				},
+				"angular-jester.specFileFolder": {
+					"type": "string",
+					"default": "spec",
+					"description": "The folder to place the generated spec file in. This is only used if the specFileLocation is set to 'root'."
+				},
+				"angular-jester.specFileTemplate": {
+					"type": "string",
+					"default": "jasmine",
+					"description": "The template to use for the generated spec file. 'jasmine' will generate a spec file with a jasmine test. 'jest' will generate a spec file with a jest test."
+				},
+				"angular-jester.specFileTemplatePath": {
+					"type": "string",
+					"default": "",
+					"description": "The path to the template file to use for the generated spec file. This is only used if the specFileTemplate is set to 'custom'."
+				},
+				"angular-jester.specFileTemplateCustom": {
+					"type": "string",
+					"default": "",
+					"description": "The custom template to use for the generated spec file. This is only used if the specFileTemplate is set to 'custom'."
+				},
+				"angular-jester.specFileTemplateCustomPath": {
+					"type": "string",
+					"default": "",
+					"description": "The path to the custom template file to use for the generated spec file. This is only used if the specFileTemplate is set to 'custom'."
+				},
+				"angular-jester.useDescribeBlocks": {
+					"type": "boolean",
+					"default": true,
+					"description": "Use separate describe blocks for each method in tests."
+				}
+			}
+		},
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "!explorerResourceIsFolder",
+					"command": "angular-jester.generateJestSpec",
+					"group": "angular-jester@1"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"dependencies": {
+		"typescript": "^5.1.6"
+	},
+	"devDependencies": {
+		"@types/debug": "^4.1.8",
+		"@types/mocha": "^10.0.1",
+		"@types/node": "16.x",
+		"@types/vscode": "^1.81.0",
+		"@typescript-eslint/eslint-plugin": "^6.4.1",
+		"@typescript-eslint/parser": "^6.4.1",
+		"@vscode/test-electron": "^2.3.4",
+		"eslint": "^8.47.0",
+		"glob": "^10.3.3",
+		"mocha": "^10.2.0"
+	}
 }
