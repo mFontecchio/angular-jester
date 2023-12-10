@@ -1,9 +1,11 @@
 name: Version Bump
 
 on:
-  push:
+  pull_request:
+    types: [synchronize, ready_for_review]
     branches-ignore:
       - develop
+      - master
 
 jobs:
   bump-version:
