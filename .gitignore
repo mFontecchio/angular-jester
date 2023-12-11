@@ -4,3 +4,5 @@ node_modules
 .vscode-test/
 *.vsix
 *.angular-test.ts
+vsc-extension-quickstart.md
+*changes.temp.ts

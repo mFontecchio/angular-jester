@@ -2,7 +2,7 @@
     "name": "angular-jester",
     "displayName": "Angular Jester",
     "description": "Generate Jest spec files for Angular projects.",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "publisher": "michael-fontecchio",
     "author": {
         "name": "Michael Fontecchio"
@@ -30,6 +30,16 @@
                 "title": "Angular: Generate jest / jasmine spec file"
             }
         ],
+        "configuration": {
+            "title": "Angular Jester",
+            "properties": {
+                "angular-jester.useDescribeBlocks": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Use separate describe blocks for each method in tests."
+                }
+            }
+        },
         "menus": {
             "explorer/context": [
                 {
